@@ -1,0 +1,63 @@
+body {
+    background-color: #151320;
+    font-family: 'Fredoka One', cursive;
+    color: white;
+}
+
+.card {
+    width: 500px;
+    margin: 3em auto;
+    border-radius: 10px;
+    background-color: #2f3136;
+    border: 2px solid white;
+    padding: 1.8rem;
+    box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.or {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid rgb(245 239 239);
+    margin: 25px 0;
+}
+
+.or span {
+    color: #151320;
+    background-color: white;
+    padding: 0 10px;
+}
+
+.email-login, .sheetdb-form {
+    display: flex;
+    flex-direction: column;
+    height: 310px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    padding: 15px 20px;
+    margin: 8px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.cta-btn {
+    background-color: rgb(69, 69, 185);
+    color: white;
+    padding: 18px 20px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+}

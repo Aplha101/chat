@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account</title>
+
+    <!-- SweetAlert via CDN (removed local broken link) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Bootstrap & Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
+        crossorigin="anonymous">
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
+        crossorigin="anonymous">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+
+    <!-- Fixed path to CSS file -->
+    <link rel="stylesheet" href="css/create.css">
+
+</head>
+<body>
+
+    <div class="card">
+        <h1 class="title">Sign-up</h1>
+        <p class="subtitle">Already have an account? <a href="login.html">Log-in</a></p>
+
+        <p class="or"><span>or</span></p>
+
+        <div class="email-login">
+            <form method="POST" id="sheetdb-form" class="sheetdb-form">
+                <label for="username">Username</label>
+                <input type="text" placeholder="Enter Username" name="data[Username]" id="user" required minlength="5" maxlength="15">
+
+                <label for="email">Email</label>
+                <input type="email" placeholder="Enter Email" name="data[Email]" id="email">
+
+                <label for="password">Password</label>
+                <input oninput="fun()" type="password" placeholder="Enter Password" id="pass" name="data[Password]" required minlength="8" maxlength="16" >
+                
+            </form>
+        </div>
+        <button  class="btn btn-primary" style="width:100%; height:50px;" id="create">Create Account</button>
+        <br>
+        <p>By creating an account you agree to our <a href="#">Terms and conditions</a></p>
+    </div>
+
+    <script>
+document.getElementById('create').addEventListener("click", function () {
+    let form = document.getElementById('sheetdb-form');
+    let formData = new FormData(form);
+
+    let data = {
+        data: {
+            Username: formData.get("data[Username]"),
+            Email: formData.get("data[Email]"),
+            Password: formData.get("data[Password]")
+        }
+    };
+
+    axios.post('https://sheetdb.io/api/v1/0qhgmvc12pifg', data)
+        .then(function (response) {
+            if (response.status === 201) {
+                localStorage.setItem("username", data.data.Username);
+                localStorage.setItem("useremail", data.data.Email);
+                localStorage.setItem("logged", true);
+                Swal.fire(
+                    "Account created!",
+                    `Welcome ${data.data.Username}!`,
+                    "success"
+                ).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        })
+        .catch(function (error) {
+            if (error.response) {
+                Swal.fire(
+                    'Error',
+                    `Server responded with status ${error.response.status}: ${error.response.data}`,
+                    'error'
+                );
+            } else if (error.request) {
+                Swal.fire(
+                    'Error',
+                    'No response received from the server.',
+                    'error'
+                );
+            } else {
+                Swal.fire(
+                    'Error',
+                    `Error occurred: ${error.message}`,
+                    'error'
+                );
+            }
+        });
+});
+
+
+function fun() {
+    const e = document.getElementById("email");
+    const u = document.getElementById("user");
+    const p = document.getElementById("pass");
+
+    if (e.value.length === 0) return;
+
+    axios.get('https://sheetdb.io/api/v1/0qhgmvc12pifg').then(response => {
+        const existingUsers = response.data;
+
+        for (let i = 0; i < existingUsers.length; i++) {
+            if (e.value === existingUsers[i].Email) {
+                Swal.fire(
+                    "Error",
+                    "User already exists!!",
+                    "info"
+                );
+                u.value = "";
+                e.value = "";
+                p.value = "";
+                break;
+            }
+        }
+    }).catch(err => {
+        console.error("Error checking existing users:", err);
+    });
+}
+</script>
+</body>
+</html>
