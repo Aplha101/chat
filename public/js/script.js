@@ -6,6 +6,14 @@ const chatBox = document.getElementById("chat-box");
 const username = localStorage.getItem("username")// Get username from local storage or prompt user
 
 
+sendBtn.addEventListener("click", () => {
+    const message = messageInput.value.trim();
+    if (message) {
+        socket.emit("chat message", `${username} : ${message}`); // ✅ Send message
+        messageInput.value = ""; // ✅ Clear input after sending
+    }
+});
+
 // Send message to server
 sendBtn.addEventListener("click", () => {
     const message = messageInput.value.trim();
