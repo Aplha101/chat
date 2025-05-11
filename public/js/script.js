@@ -9,17 +9,16 @@ const username = localStorage.getItem("username")// Get username from local stor
 sendBtn.addEventListener("click", () => {
     const message = messageInput.value.trim();
     if (message) {
-        socket.emit("chat message", `${username} : ${message}`); // ✅ Send message
-        messageInput.value = ""; // ✅ Clear input after sending
+        socket.emit("chat message", `${username} : ${message}`); 
+        messageInput.value = ""; 
     }
 });
 
-// Send message to server
 sendBtn.addEventListener("click", () => {
     const message = messageInput.value.trim();
     if (message) {
-        socket.emit("chat message", `${username} : ${message}`); // Send message
-        messageInput.value = ''; // Clear input after sending
+        socket.emit("chat message", `${username} : ${message}`); 
+        messageInput.value = ''; 
     }
 });
 

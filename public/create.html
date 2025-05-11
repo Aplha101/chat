@@ -71,6 +71,8 @@ document.getElementById('create').addEventListener("click", function () {
                 localStorage.setItem("username", data.data.Username);
                 localStorage.setItem("useremail", data.data.Email);
                 localStorage.setItem("logged", true);
+                //set the date when the user joins in localstorage as dateJoined
+                localStorage.setItem("dateJoined", new Date().toLocaleDateString());
                 Swal.fire(
                     "Account created!",
                     `Welcome ${data.data.Username}!`,

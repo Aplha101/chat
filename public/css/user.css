@@ -1,0 +1,17 @@
+body {
+  font-family: 'Fredoka One', cursive;
+}
+
+.profile-card {
+  border-radius: 12px;
+  border: 2px solid #ffffff22;
+  background-color: #2f3136 !important;
+}
+
+#logoutBtn {
+  font-weight: bold;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  white-space: nowrap;
+}
