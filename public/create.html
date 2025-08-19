@@ -119,7 +119,7 @@ function fun() {
         const existingUsers = response.data;
 
         for (let i = 0; i < existingUsers.length; i++) {
-            if (e.value === existingUsers[i].Email) {
+            if (e.value === existingUsers[i].Email  || u.value === existingUsers[i].Username) {
                 Swal.fire(
                     "Error",
                     "User already exists!!",

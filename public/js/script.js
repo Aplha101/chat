@@ -22,13 +22,12 @@ sendBtn.addEventListener("click", () => {
     }
 });
 
-// Receive message from server & display it
 socket.on("chat message", (msg) => {
     const messageElement = document.createElement("p");
     messageElement.textContent = msg;
     chatBox.appendChild(messageElement);
 
-    chatBox.scrollTop = chatBox.scrollHeight; // ✅ Auto-scroll
+    chatBox.scrollTop = chatBox.scrollHeight; 
 });
 
 
@@ -40,14 +39,12 @@ messageInput.addEventListener("keypress", (event) => {
 });
 
 
-// ✅ Send username to server when connecting
 socket.emit("userJoined", username);
 
-// ✅ Listen for join/leave messages & show in chat
 socket.on("systemMessage", (msg) => {
     const messageElement = document.createElement("p");
     messageElement.textContent = msg;
-    messageElement.classList.add("system-message"); // Style system messages differently
+    messageElement.classList.add("system-message"); 
     chatBox.appendChild(messageElement);
 });
 
