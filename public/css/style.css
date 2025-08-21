@@ -7,19 +7,23 @@ body {
     flex-direction: column;
     height: 100vh;
 }
+
 body, button, input, select, textarea {
     font-family: 'Fredoka One', sans-serif !important;
 }
+
 #chat-container {
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* prevents input from being pushed */
     padding: 1rem;
     gap: 1rem;
 }
 
+/* Chat box scrolls independently */
 #chat-box {
-    flex-grow: 1;
+    flex: 1;
     overflow-y: auto;
     padding: 1rem;
     background-color: #2f3136;
@@ -78,6 +82,8 @@ input, button {
     background: #151320;
     border-top: 2px solid #ffffff22;
     padding: 1rem;
+    position: sticky;
+    bottom: 0;   /* stays at bottom */
 }
 
 @media (max-width: 576px) {

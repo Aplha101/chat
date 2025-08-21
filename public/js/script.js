@@ -28,11 +28,16 @@ socket.on("chat message", (data) => {
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("chat-message");
 
-    msgDiv.innerHTML = `
-        <img src="${pfp}" alt="pfp" class="pfp" width="20" height="20" 
-             style="border-radius:50%; margin-right:5px; ">
-        <strong>${username}:</strong> ${message}
-    `;
+msgDiv.innerHTML = `
+    <img src="${pfp}" alt="pfp" class="pfp" width="30" height="30" 
+         style="border-radius:50%; margin-right:5px;">
+    <a href="#" 
+       class="chat-username" 
+       data-user='${JSON.stringify({ username, pfp })}'
+       style="text-decoration:none; color:#4da6ff; font-weight:bold;">
+        ${username}
+    </a>: ${message}
+`;
 
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -60,4 +65,12 @@ socket.on("userLeft", (msg) => {
     messageElement.textContent = msg;
     messageElement.classList.add("system-message");
     chatBox.appendChild(messageElement);
+});
+
+chatBox.addEventListener("click", (e) => {
+    if (e.target.classList.contains("chat-username")) {
+        const userData = JSON.parse(e.target.getAttribute("data-user"));
+        console.log("Full user object:", userData);
+        
+    }
 });
