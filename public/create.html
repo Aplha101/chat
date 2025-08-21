@@ -21,7 +21,6 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 
-    <!-- Fixed path to CSS file -->
     <link rel="stylesheet" href="css/create.css">
 
 </head>
@@ -70,7 +69,7 @@ document.getElementById('create').addEventListener("click", function () {
                 localStorage.setItem("username", data.data.Username);
                 localStorage.setItem("useremail", data.data.Email);
                 localStorage.setItem("logged", true);
-                //set the date when the user joins in localstorage as dateJoined
+                
                 localStorage.setItem("dateJoined", new Date().toLocaleDateString());
                 Swal.fire(
                     "Account created!",
