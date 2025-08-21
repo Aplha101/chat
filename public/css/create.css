@@ -1,9 +1,10 @@
 body {
     background-color: #151320;
-    font-family: 'Fredoka One', cursive;
     color: white;
 }
-
+body, button, input, select, textarea {
+    font-family: 'Fredoka One', sans-serif !important;
+}
 .card {
     width: 500px;
     margin: 3em auto;
