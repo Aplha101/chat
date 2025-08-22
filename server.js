@@ -12,28 +12,29 @@ app.get("/", (req, res) => {
 });
 app.use(express.static("public"));
 
-// Socket.IO setup
 const users = {};
+
 io.on("connection", (socket) => {
     socket.on("userJoined", (username) => {
-        users[socket.id] = username; 
+        users[socket.id] = { username }; 
+        io.emit("updateUserList", Object.values(users)); 
         socket.broadcast.emit("systemMessage", `${username} has joined the chat`);
     });
 
-    // ✅ Accept object instead of string
     socket.on("chat message", (data) => {
-        // data = { username, message, pfp }
-        io.emit("chat message", data); 
+        io.emit("chat message", data);
     });
 
     socket.on("disconnect", () => {
-        const username = users[socket.id];
-        if (username) {
-            socket.broadcast.emit("userLeft", `${username} has left the chat`);
+        const user = users[socket.id];
+        if (user) {
+            socket.broadcast.emit("systemMessage", `${user.username} has left the chat`);
             delete users[socket.id];
+            io.emit("updateUserList", Object.values(users)); // ✅ update user list after disconnect
         }
     });
 });
+
 
 const PORT = 3000;
 server.listen(PORT, () => {

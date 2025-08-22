@@ -16,12 +16,11 @@ body, button, input, select, textarea {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* prevents input from being pushed */
+    overflow: hidden; 
     padding: 1rem;
     gap: 1rem;
 }
 
-/* Chat box scrolls independently */
 #chat-box {
     flex: 1;
     overflow-y: auto;
@@ -83,7 +82,7 @@ input, button {
     border-top: 2px solid #ffffff22;
     padding: 1rem;
     position: sticky;
-    bottom: 0;   /* stays at bottom */
+    bottom: 0;   
 }
 
 @media (max-width: 576px) {
@@ -124,3 +123,8 @@ input, button {
     white-space: nowrap;
 }
 
+#online-users {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #4da6ff !important;
+}

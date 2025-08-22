@@ -46,6 +46,11 @@
     </div>
 
     <script>
+
+      const logged = localStorage.getItem("logged");
+      if(logged){
+        window.location.href = "index.html";
+      }
 document.getElementById('sheetdb-form').addEventListener("submit", function (e) {
   e.preventDefault(); 
   fun();              // run login function
