@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Log In</title>
 
-    <!-- SweetAlert via CDN (removed broken local link) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap & Axios -->
@@ -53,7 +52,7 @@
       }
 document.getElementById('sheetdb-form').addEventListener("submit", function (e) {
   e.preventDefault(); 
-  fun();              // run login function
+  fun();
 });
 
 let fun = () => {
@@ -73,6 +72,7 @@ let fun = () => {
         localStorage.setItem("username", dat[i].Username);
         localStorage.setItem("useremail", dat[i].Email);
         localStorage.setItem("logged", true);
+        localStorage.setItem("dateJoined", dat[i].dateJoined);
         localStorage.setItem("pfp", dat[i].pfp);
 
         Swal.fire(
@@ -88,7 +88,6 @@ let fun = () => {
         userFound = true;
         break;
       } else if (e.value === dat[i].Email && p.value !== dat[i].Password) {
-        // Incorrect password
         Swal.fire(
           "Oops..!",
           "Incorrect password",

@@ -4,19 +4,13 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
       window.location.href = 'login.html';
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const username = localStorage.getItem('username');
-        const email = localStorage.getItem('useremail');
-        const dateJoined = localStorage.getItem('dateJoined');
-        document.getElementById('email').textContent = `Email: ${email}`;
-        document.getElementById('dateJoined').textContent = `Date Joined: ${dateJoined}`;
-        document.getElementById('username').textContent = `Username: ${username}`;
-    });
+
 
     document.addEventListener('DOMContentLoaded', () => {
         const username = localStorage.getItem("username");
         const email = localStorage.getItem("useremail");
         const p = localStorage.getItem("pfp");
+        const dateJoined = localStorage.getItem("dateJoined");
         if(p){
             document.getElementById('pfp').src = p;
         } else {
@@ -30,6 +24,9 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
         if (email) {
             document.getElementById('email').textContent = `Email: ${email}`;
         }
+        if(dateJoined){
+            document.getElementById('dateJoined').textContent = `Date Joined: ${dateJoined}`;
+        }
 
         const api = 'f8ddea1856c0c07f72fdcb51d3998290';
 
@@ -40,6 +37,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
             const formData = new FormData();
             formData.append("image", e.target.files[0]);
+
 
             await axios.post(`https://api.imgbb.com/1/upload?key=${api}`, formData)
                 .then((res) => {
@@ -64,7 +62,9 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
                     Username: username,
                     Email: email,
                     Password: pass,
+                    dateJoined : dateJoined,
                     pfp: pfplink
+
                 }
             });
 

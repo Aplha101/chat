@@ -59,7 +59,8 @@ document.getElementById('create').addEventListener("click", function () {
         data: {
             Username: formData.get("data[Username]"),
             Email: formData.get("data[Email]"),
-            Password: formData.get("data[Password]")
+            Password: formData.get("data[Password]"),
+            dateJoined: new Date().toLocaleDateString()
         }
     };
 
@@ -69,7 +70,6 @@ document.getElementById('create').addEventListener("click", function () {
                 localStorage.setItem("username", data.data.Username);
                 localStorage.setItem("useremail", data.data.Email);
                 localStorage.setItem("logged", true);
-                
                 localStorage.setItem("dateJoined", new Date().toLocaleDateString());
                 Swal.fire(
                     "Account created!",

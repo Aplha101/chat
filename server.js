@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
         if (user) {
             socket.broadcast.emit("systemMessage", `${user.username} has left the chat`);
             delete users[socket.id];
-            io.emit("updateUserList", Object.values(users)); // ✅ update user list after disconnect
+            io.emit("updateUserList", Object.values(users)); 
         }
     });
 });

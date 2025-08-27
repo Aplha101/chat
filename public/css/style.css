@@ -128,3 +128,86 @@ input, button {
     font-weight: bold;
     color: #4da6ff !important;
 }
+
+
+.chat-message {
+    background: #2f3136;
+    border: 2px solid #ffffff22;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.userinfo {
+    background: #2f3136;
+    border: 2px solid #ffffff22;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+    max-width: 300px;
+}
+
+/* Header */
+.userinfo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #ffffff22;
+}
+
+.userinfo-username {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.userinfo-close {
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.userinfo-close:hover {
+    color: #ff5c5c;
+}
+
+/* Body */
+.userinfo-body {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.userinfo-pfp {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #444;
+}
+
+/* Buttons */
+.userinfo-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.circle-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: #4545b9;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.circle-btn:hover {
+    background-color: #5c5cd6;
+}
+
+.userinfo-status {
+    font-size: 1rem;
+    color: gray;
+}
