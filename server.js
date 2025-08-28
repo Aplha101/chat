@@ -20,13 +20,21 @@ const users = {};
 // Message storage
 const MESSAGES_FILE = path.join(__dirname, "messages.jsonl");
 
-// Load previous messages from file
+// Load previous messages from file safely
 function loadMessages() {
     if (!fs.existsSync(MESSAGES_FILE)) return [];
     return fs.readFileSync(MESSAGES_FILE, "utf-8")
         .trim()
         .split("\n")
-        .map(line => JSON.parse(line));
+        .filter(line => line.trim() !== "") // ✅ skip empty lines
+        .map(line => {
+            try {
+                return JSON.parse(line);
+            } catch {
+                return null; // ✅ skip corrupt lines
+            }
+        })
+        .filter(m => m); // ✅ remove nulls
 }
 
 // Save a new message (append)
@@ -48,9 +56,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("chat message", (data) => {
-        // Save to memory & file
         messages.push(data);
-        if (messages.length > 100) messages.shift(); // keep memory small
+        if (messages.length > 100) messages.shift(); 
         saveMessage(data);
 
         io.emit("chat message", data);
@@ -77,10 +84,8 @@ function getFileSize(filePath) {
     return "File not found";
 }
 
-// Example: log file size on server start
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
-    
-console.log("file size:", getFileSize(MESSAGES_FILE));
+    console.log("file size:", getFileSize(MESSAGES_FILE));
 });

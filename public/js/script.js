@@ -21,25 +21,31 @@ sendBtn.addEventListener("click", () => {
 });
 
 socket.on("chat message", (data) => {
+    if (!data || !data.username || !data.message || !data.pfp) {
+        console.warn("Skipped invalid message:", data);
+        return; // 🚀 Don’t render broken messages
+    }
+
     const { username, message, pfp , dateJoined} = data;
 
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("chat-message");
 
-msgDiv.innerHTML = `
-    <img src="${pfp}" alt="pfp" class="pfp" width="40" height="40" 
-         style="border-radius:50%; margin-right:5px;">
-    <a href="#" 
-       class="chat-username" 
-       data-user='${JSON.stringify({ username , pfp , dateJoined })}'
-       style="text-decoration:none; color:#4da6ff; font-weight:bold;">
-        ${username}
-    </a>: ${message}
-`;
+    msgDiv.innerHTML = `
+        <img src="${pfp}" alt="pfp" class="pfp" width="40" height="40" 
+             style="border-radius:50%; margin-right:5px;">
+        <a href="#" 
+           class="chat-username" 
+           data-user='${JSON.stringify({ username , pfp , dateJoined })}'
+           style="text-decoration:none; color:#4da6ff; font-weight:bold;">
+            ${username}
+        </a>: ${message}
+    `;
 
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+
 
 socket.on("chatHistory", (messages) => {
     messages.forEach((data) => {
