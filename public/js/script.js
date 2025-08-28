@@ -27,7 +27,7 @@ socket.on("chat message", (data) => {
     msgDiv.classList.add("chat-message");
 
 msgDiv.innerHTML = `
-    <img src="${pfp}" alt="pfp" class="pfp" width="30" height="30" 
+    <img src="${pfp}" alt="pfp" class="pfp" width="40" height="40" 
          style="border-radius:50%; margin-right:5px;">
     <a href="#" 
        class="chat-username" 
@@ -40,6 +40,30 @@ msgDiv.innerHTML = `
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 });
+
+socket.on("chatHistory", (messages) => {
+    messages.forEach((data) => {
+        const { username, message, pfp, dateJoined } = data;
+
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("chat-message");
+
+        msgDiv.innerHTML = `
+            <img src="${pfp}" alt="pfp" class="pfp" width="40" height="40" 
+                 style="border-radius:50%; margin-right:5px;">
+            <a href="#" 
+               class="chat-username" 
+               data-user='${JSON.stringify({ username, pfp, dateJoined })}'
+               style="text-decoration:none; color:#4da6ff; font-weight:bold;">
+                ${username}
+            </a>: ${message}
+        `;
+        chatBox.appendChild(msgDiv);
+    });
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
 
 messageInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
@@ -68,8 +92,6 @@ socket.on("userLeft", (msg) => {
 chatBox.addEventListener("click", (e) => {
     if (e.target.classList.contains("chat-username")) {
         const userData = JSON.parse(e.target.getAttribute("data-user"));
-
-        // Remove old userinfo if exists
         const oldInfo = document.querySelector(".userinfo");
         if (oldInfo) oldInfo.remove();
 
@@ -103,9 +125,11 @@ chatBox.addEventListener("click", (e) => {
                     <p class='dateJoined'> Joined : ${userData.dateJoined}</p>
                     <button class="circle-btn"></button>
                     <button class="circle-btn"></button>
+                    <button class="circle-btn"></button>
                 </div>
             </div>
         `;
+
         chatBox.appendChild(userinfoDiv);
         userinfoDiv.querySelector(".userinfo-close").addEventListener("click", (ev) => {
             ev.preventDefault();
@@ -119,10 +143,10 @@ const onlineUsersEl = document.getElementById("online-users");
 
 
 socket.on("updateUserList", (users) => {
-    console.log(users)
     if (users.length === 0) {
         onlineUsersEl.textContent = "No users online";
     } else {
         onlineUsersEl.textContent = "Online: " + users.map(u => u.username).join(", ");
     }
 });
+

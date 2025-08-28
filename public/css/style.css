@@ -29,7 +29,10 @@ body, button, input, select, textarea {
     border-radius: 12px;
     border: 2px solid #ffffff22;
 }
-
+::placeholder {
+  color: white;
+  opacity: 1; 
+}
 #message-input {
     flex: 1;
     padding: 12px;

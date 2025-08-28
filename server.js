@@ -1,6 +1,8 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
@@ -12,16 +14,45 @@ app.get("/", (req, res) => {
 });
 app.use(express.static("public"));
 
+// Track users
 const users = {};
+
+// Message storage
+const MESSAGES_FILE = path.join(__dirname, "messages.jsonl");
+
+// Load previous messages from file
+function loadMessages() {
+    if (!fs.existsSync(MESSAGES_FILE)) return [];
+    return fs.readFileSync(MESSAGES_FILE, "utf-8")
+        .trim()
+        .split("\n")
+        .map(line => JSON.parse(line));
+}
+
+// Save a new message (append)
+function saveMessage(message) {
+    fs.appendFileSync(MESSAGES_FILE, JSON.stringify(message) + "\n");
+}
+
+// Keep last 100 in memory for fast access
+let messages = loadMessages().slice(-100);
 
 io.on("connection", (socket) => {
     socket.on("userJoined", (username) => {
         users[socket.id] = { username }; 
         io.emit("updateUserList", Object.values(users)); 
         socket.broadcast.emit("systemMessage", `${username} has joined the chat`);
+
+        // ✅ Send recent chat history to new user
+        socket.emit("chatHistory", messages);
     });
 
     socket.on("chat message", (data) => {
+        // Save to memory & file
+        messages.push(data);
+        if (messages.length > 100) messages.shift(); // keep memory small
+        saveMessage(data);
+
         io.emit("chat message", data);
     });
 
@@ -35,8 +66,21 @@ io.on("connection", (socket) => {
     });
 });
 
+function getFileSize(filePath) {
+    if (fs.existsSync(filePath)) {
+        const stats = fs.statSync(filePath);
+        const bytes = stats.size;
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+    return "File not found";
+}
 
+// Example: log file size on server start
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
+    
+console.log("file size:", getFileSize(MESSAGES_FILE));
 });
