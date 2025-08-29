@@ -33,7 +33,7 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
         let pfplink = " " ;
         const img = document.getElementById('imageUpload');
         img.addEventListener('change', async (e) => {
-            console.log(e.target.files[0]);
+
 
             const formData = new FormData();
             formData.append("image", e.target.files[0]);
@@ -47,10 +47,8 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
                 });
             await axios.get('https://sheetdb.io/api/v1/0qhgmvc12pifg')
                 .then((e) => {
-                    console.log(e);
                     for (let i = 0; i < e.data.length; i++) {
                         if (e.data[i].Username == username && e.data[i].Email == email) {
-                            console.log(e.data[i]);
                             pass = e.data[i].Password;
                             break;
                         }
