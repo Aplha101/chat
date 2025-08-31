@@ -6,8 +6,6 @@
     <title>Create Account</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
         crossorigin="anonymous">
@@ -20,9 +18,7 @@
         crossorigin="anonymous">
     
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="css/create.css">
-
 </head>
 <body>
 
@@ -42,25 +38,34 @@
 
                 <label for="password">Password</label>
                 <input oninput="fun()" type="password" placeholder="Enter Password" id="pass" name="data[Password]" required minlength="8" maxlength="16" >
-                
             </form>
         </div>
-        <button  class="btn btn-primary" style="width:100%; height:50px;" id="create">Create Account</button>
+        <button class="btn btn-primary" style="width:100%; height:50px;" id="create">Create Account</button>
         <br>
         <p>By creating an account you agree to our <a href="#">Terms and conditions</a></p>
     </div>
 
-    <script>
-document.getElementById('create').addEventListener("click", function () {
+<script>
+const genId = async () => {
+    const response = await axios.get('https://sheetdb.io/api/v1/0qhgmvc12pifg');
+    const existingUsers = response.data;
+    const newId = 1020250 + existingUsers.length + 1;
+    return newId;
+};
+
+document.getElementById('create').addEventListener("click", async function () {
     let form = document.getElementById('sheetdb-form');
     let formData = new FormData(form);
+
+    const newId = await genId(); 
 
     let data = {
         data: {
             Username: formData.get("data[Username]"),
             Email: formData.get("data[Email]"),
             Password: formData.get("data[Password]"),
-            dateJoined: new Date().toLocaleDateString()
+            dateJoined: new Date().toLocaleDateString(),
+            id: newId
         }
     };
 
@@ -70,7 +75,9 @@ document.getElementById('create').addEventListener("click", function () {
                 localStorage.setItem("username", data.data.Username);
                 localStorage.setItem("useremail", data.data.Email);
                 localStorage.setItem("logged", true);
-                localStorage.setItem("dateJoined", new Date().toLocaleDateString());
+                localStorage.setItem("dateJoined", data.data.dateJoined);
+                localStorage.setItem("id", newId); 
+
                 Swal.fire(
                     "Account created!",
                     `Welcome ${data.data.Username}!`,
@@ -104,8 +111,6 @@ document.getElementById('create').addEventListener("click", function () {
             }
         });
 });
-//test
-
 
 function fun() {
     const e = document.getElementById("email");
@@ -118,7 +123,7 @@ function fun() {
         const existingUsers = response.data;
 
         for (let i = 0; i < existingUsers.length; i++) {
-            if (e.value === existingUsers[i].Email  || u.value === existingUsers[i].Username) {
+            if (e.value === existingUsers[i].Email || u.value === existingUsers[i].Username) {
                 Swal.fire(
                     "Error",
                     "User already exists!!",

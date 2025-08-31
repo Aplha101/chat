@@ -1,29 +1,69 @@
 body, button, input, select, textarea {
-    font-family: 'Fredoka One', sans-serif !important;
+  font-family: 'Fredoka One', sans-serif !important;
 }
 
-.profile-card {
-  border-radius: 12px;
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #202225; /* Discord-like dark */
+  color: #fff;
+}
+
+.profile-container {
+  width: 100%;
+  padding: 1.5rem;   /* add padding so it doesn’t touch the edges */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* spacing between top and bottom cards */
+}
+
+
+/* Top Card */
+.profile-top {
   border: 2px solid #ffffff22;
-  background-color: #2f3136 !important;
+  border-radius: 12px;
+  background: #2f3136;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-#logoutBtn {
-  font-weight: bold;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  white-space: nowrap;
+/* PFP + Username block */
+.profile-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#pfp{
- width: 150px;
-  height: 150px;
+#pfp {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 3px solid white;
   object-fit: cover;
-  display: block;
-  margin: 0 auto;
   cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.username {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Bottom Card */
+.profile-bottom {
+  border: 2px solid #ffffff22;
+  border-radius: 12px;
+  background: #2f3136;
+  padding: 1.5rem;
+  min-height: 120px;
+}
+
+.bio-placeholder {
+  color: #bbb;
+  font-size: 1rem;
 }
