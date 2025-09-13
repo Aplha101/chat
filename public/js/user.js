@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const p = localStorage.getItem("pfp");
   const dateJoined = localStorage.getItem("dateJoined");
   const id = localStorage.getItem("id");
-
+const Friends = localStorage.getItem("Friends") || "";
   // set profile picture from localStorage if available
   if (p) {
     document.getElementById('pfp').src = p;
@@ -44,8 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         pfplink = res.data.data.display_url;
         localStorage.setItem('pfp', pfplink);
       });
-
-    // fetch password again so it’s not lost
     let pass = "";
     await axios.get('https://sheetdb.io/api/v1/0qhgmvc12pifg')
       .then((res) => {
@@ -68,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         Password: pass,
         dateJoined: dateJoined,
         pfp: pfplink,
-        id: id
+        id: id,
+        Friends: Friends
       }
     });
 

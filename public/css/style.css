@@ -189,25 +189,34 @@ input, button {
     border: 3px solid #444;
 }
 
-/* Buttons */
 .userinfo-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.circle-btn {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: none;
-    background-color: #4545b9;
-    cursor: pointer;
-    transition: background-color 0.2s;
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid #fff;
+  background: transparent;
+  color: white;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.circle-btn:hover {
-    background-color: #5c5cd6;
+.action-btn svg {
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #4da6ff;
+  color: #4da6ff;
 }
 
 .userinfo-status {

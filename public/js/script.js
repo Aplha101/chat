@@ -6,12 +6,11 @@ const chatBox = document.getElementById("chat-box");
 const username = localStorage.getItem("username") || "Guest";
 const pfp = localStorage.getItem("pfp") || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 const dateJoined = localStorage.getItem("dateJoined") ;
+const email = localStorage.getItem("email");
+const id = localStorage.getItem("id");
+const Friends = localStorage.getItem("Friends") || "";
 sendBtn.addEventListener("click", () => {
     const message = messageInput.value.trim();
-    const msglim = document.getElementById("msglim");
-
-  
-
     if (message && message.length <= 100) {
         socket.emit("chat message", {
             username: username,
@@ -41,7 +40,7 @@ socket.on("chat message", (data) => {
   <div class="msgContent">
     <a href="#"
        class="chat-username"
-       data-user='${JSON.stringify({ username , pfp , dateJoined })}'
+       data-user='${JSON.stringify({ username , pfp , dateJoined , email, id , Friends})}'
        style="text-decoration:none; color:#4da6ff; font-weight:bold;">
         ${username}
     </a>: ${message}
@@ -80,7 +79,7 @@ socket.on("chatHistory", (messages) => {
                  style="border-radius:50%; margin-right:5px;">
             <a href="#" 
                class="chat-username" 
-               data-user='${JSON.stringify({ username, pfp, dateJoined })}'
+               data-user='${JSON.stringify({ username, pfp, dateJoined, email, id, Friends })}'
                style="text-decoration:none; color:#4da6ff; font-weight:bold;">
                 ${username}
             </a>: ${message}
@@ -140,6 +139,10 @@ chatBox.addEventListener("click", (e) => {
     if (e.target.classList.contains("chat-username")) {
         const userData = JSON.parse(e.target.getAttribute("data-user"));
         const oldInfo = document.querySelector(".userinfo");
+        if (userData.id === id || userData.email === email) {
+            return;
+        }
+
         if (oldInfo) oldInfo.remove();
 
 
@@ -147,34 +150,65 @@ chatBox.addEventListener("click", (e) => {
         userinfoDiv.classList.add("userinfo");
 
         userinfoDiv.innerHTML = `
-            <!-- Header -->
             <div class="userinfo-header">
-                <span class="userinfo-username">${userData.username}</span>
-                <a  class="userinfo-close">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" 
-                       fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 
-                             7.293l2.646-2.647a.5.5 0 0 1 
-                             .708.708L8.707 8l2.647 
-                             2.646a.5.5 0 0 1-.708.708L8 
-                             8.707l-2.646 
-                             2.647a.5.5 0 0 1-.708-.708L7.293 
-                             8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                  </svg>
-                </a>
-            </div>
+  <span class="userinfo-username">${userData.username}</span>
+  <span class="userinfo-close">&times;</span>
+</div>
 
-            <!-- Body -->
-            <div class="userinfo-body">
-                <img src="${userData.pfp}" alt="Profile Picture" 
-                     class="userinfo-pfp" />
-                <div class="userinfo-buttons">
-                    <p class='dateJoined'> Joined : ${userData.dateJoined}</p>
-                    <button class="circle-btn"  id='addFriend'></button>
-                    <button class="circle-btn" id='removeFriend'></button>
-                    <button class="circle-btn" id='MessageUser'></button>
-                </div>
-            </div>
+<div class="userinfo-body">
+  <img src="${userData.pfp}" alt="pfp" class="userinfo-pfp">
+  <div>
+    <p class="userinfo-status">Joined: ${userData.dateJoined}</p>
+  </div>
+</div>
+
+<div class="userinfo-buttons">
+  <button class="action-btn" id="addFriend">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+         fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+      <path d="M1 14s-1 0-1-1 1-4 6-4 6 
+               3 6 4-1 1-1 1zm5-6a3 3 0 1 
+               0 0-6 3 3 0 0 0 0 6"/>
+      <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 
+               1 .5.5V7h1.5a.5.5 0 0 1 0 
+               1H14v1.5a.5.5 0 0 1-1 
+               0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 
+               0 0 1 .5-.5"/>
+    </svg>
+    Add Friend
+  </button>
+  
+  <button class="action-btn" id="removeFriend">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+         fill="currentColor" class="bi bi-person-dash-fill" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 
+               1 .5-.5h4a.5.5 0 0 1 0 
+               1h-4a.5.5 0 0 1-.5-.5"/>
+      <path d="M1 14s-1 0-1-1 1-4 6-4 
+               6 3 6 4-1 1-1 1zm5-6a3 
+               3 0 1 0 0-6 3 3 0 0 
+               0 0 6"/>
+    </svg>
+    Remove Friend
+  </button>
+  
+  <button class="action-btn" id="MessageUser">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+         fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+      <path d="M16 8c0 3.866-3.582 7-8 
+               7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 
+               1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 
+               11.37 0 9.76 0 8c0-3.866 3.582-7 
+               8-7s8 3.134 8 7M5 8a1 1 0 
+               1 0-2 0 1 1 0 0 0 2 0m4 
+               0a1 1 0 1 0-2 0 1 1 0 0 
+               0 2 0m3 1a1 1 0 1 0 0-2 
+               1 1 0 0 0 0 2"/>
+    </svg>
+    Message
+  </button>
+</div>
+
         `;
 
         chatBox.appendChild(userinfoDiv);
@@ -183,7 +217,26 @@ chatBox.addEventListener("click", (e) => {
             userinfoDiv.remove();
         });
         $('#addFriend').click(() => {
-            
+            let f = Friends.split(",");
+            if(userData.id in f) {
+                alert("User is already your friend!");
+            }
+            else{
+                f.push(userData.id);
+                 axios.delete(`https://sheetdb.io/api/v1/0qhgmvc12pifg/Email/${email}`);
+                axios.post('https://sheetdb.io/api/v1/0qhgmvc12pifg', {
+                    "data": {
+                        "Username": username,
+                        "Email": email,
+                        "Password": localStorage.getItem("password"),
+                        "pfp": pfp,
+                        "DateJoined": dateJoined,
+                        "Friends": f.toString()
+                    }
+                });
+                localStorage.setItem("Friends", f.toString());
+                alert("Friend added!");
+            }
         });
     }
 });
