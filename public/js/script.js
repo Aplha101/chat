@@ -2,13 +2,13 @@ const socket = io();
 const messageInput = document.getElementById("message-input");
 const sendBtn = document.getElementById("send-btn");
 const chatBox = document.getElementById("chat-box");
-
 const username = localStorage.getItem("username") || "Guest";
 const pfp = localStorage.getItem("pfp") || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 const dateJoined = localStorage.getItem("dateJoined") ;
 const email = localStorage.getItem("email");
 const id = localStorage.getItem("id");
 const Friends = localStorage.getItem("Friends") || "";
+
 sendBtn.addEventListener("click", () => {
     const message = messageInput.value.trim();
     if (message && message.length <= 100) {
@@ -16,6 +16,9 @@ sendBtn.addEventListener("click", () => {
             username: username,
             message: message,
             pfp: pfp,
+            email: email,
+            id: id,
+             Friends: Friends,
             dateJoined: dateJoined
         });
         messageInput.value = '';
@@ -28,7 +31,7 @@ socket.on("chat message", (data) => {
         console.warn("Skipped invalid message:", data);
         return; 
     }
-    const { username, message, pfp , dateJoined} = data;
+    const { username, message, pfp , dateJoined , email, id , Friends} = data;
 
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("chat-message");
@@ -69,7 +72,7 @@ socket.on("chat message", (data) => {
 
 socket.on("chatHistory", (messages) => {
     messages.forEach((data) => {
-        const { username, message, pfp, dateJoined } = data;
+        const { username, message, pfp, dateJoined , email, id, Friends} = data;
 
         const msgDiv = document.createElement("div");
         msgDiv.classList.add("chat-message");
@@ -138,8 +141,9 @@ socket.on("userLeft", (msg) => {
 chatBox.addEventListener("click", (e) => {
     if (e.target.classList.contains("chat-username")) {
         const userData = JSON.parse(e.target.getAttribute("data-user"));
+        console.log(userData)
         const oldInfo = document.querySelector(".userinfo");
-        if (userData.id === id || userData.email === email) {
+        if (userData.id === id) {
             return;
         }
 
