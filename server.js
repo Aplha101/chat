@@ -89,3 +89,4 @@ server.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log("file size:", getFileSize(MESSAGES_FILE));
 });
+

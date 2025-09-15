@@ -74,6 +74,8 @@ let fun = () => {
         localStorage.setItem("logged", true);
         localStorage.setItem("dateJoined", dat[i].dateJoined);
         localStorage.setItem("pfp", dat[i].pfp);
+        localStorage.setItem("id", dat[i].id);
+        localStorage.setItem("Friends", dat[i].Friends);
 
         Swal.fire(
           "Logged in!",
