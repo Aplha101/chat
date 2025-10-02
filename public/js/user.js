@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dateJoined = localStorage.getItem("dateJoined");
   const id = localStorage.getItem("id");
 const Friends = localStorage.getItem("Friends") || "";
-  // set profile picture from localStorage if available
+
   if (p) {
     document.getElementById('pfp').src = p;
   } else {
@@ -31,13 +31,13 @@ const Friends = localStorage.getItem("Friends") || "";
   const api = 'f8ddea1856c0c07f72fdcb51d3998290';
 
   let pfplink = "";
-  const img = document.getElementById('pfpInput'); // ✅ correct id
+  const img = document.getElementById('pfpInput'); 
 
   img.addEventListener('change', async (e) => {
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
 
-    // upload to imgbb
+
     await axios.post(`https://api.imgbb.com/1/upload?key=${api}`, formData)
       .then((res) => {
         console.log("Image uploaded to imgbb:", res.data);
@@ -54,11 +54,8 @@ const Friends = localStorage.getItem("Friends") || "";
           }
         }
       });
-
-    // delete old record
     await axios.delete(`https://sheetdb.io/api/v1/0qhgmvc12pifg/Email/${email}`);
 
-    // re-insert new record with updated pfp
     await axios.post("https://sheetdb.io/api/v1/0qhgmvc12pifg", {
       data: {
         Username: username,
@@ -71,7 +68,6 @@ const Friends = localStorage.getItem("Friends") || "";
       }
     });
 
-    // update image on page
     document.getElementById('pfp').src = localStorage.getItem('pfp');
   });
 });

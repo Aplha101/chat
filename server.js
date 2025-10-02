@@ -8,41 +8,37 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Serve static files
+
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/login.html"); 
 });
 app.use(express.static("public"));
 
-// Track users
+
 const users = {};
 
-// Message storage
 const MESSAGES_FILE = path.join(__dirname, "messages.jsonl");
-
-// Load previous messages from file safely
 function loadMessages() {
     if (!fs.existsSync(MESSAGES_FILE)) return [];
     return fs.readFileSync(MESSAGES_FILE, "utf-8")
         .trim()
         .split("\n")
-        .filter(line => line.trim() !== "") // ✅ skip empty lines
+        .filter(line => line.trim() !== "") 
         .map(line => {
             try {
                 return JSON.parse(line);
             } catch {
-                return null; // ✅ skip corrupt lines
+                return null; 
             }
         })
-        .filter(m => m); // ✅ remove nulls
+        .filter(m => m);
 }
 
-// Save a new message (append)
 function saveMessage(message) {
     fs.appendFileSync(MESSAGES_FILE, JSON.stringify(message) + "\n");
 }
 
-// Keep last 100 in memory for fast access
+
 let messages = loadMessages().slice(-100);
 
 io.on("connection", (socket) => {
@@ -51,7 +47,6 @@ io.on("connection", (socket) => {
         io.emit("updateUserList", Object.values(users)); 
         socket.broadcast.emit("systemMessage", `${username} has joined the chat`);
 
-        // ✅ Send recent chat history to new user
         socket.emit("chatHistory", messages);
     });
 
